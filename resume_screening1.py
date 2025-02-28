@@ -1,9 +1,9 @@
 import streamlit as st
 import PyPDF2
-import google.generativeai as genai  # Import the Gemini library
+import google.generativeai as genai 
 
 # Set your Gemini API Key
-GEMINI_API_KEY = 'AIzaSyDT5161mUjmkK8ywECD26_ZR3YaSjC-X4U'  # Replace with your actual Gemini API key
+GEMINI_API_KEY = 'AIzaSyDT5161mUjmkK8ywECD26_ZR3YaSjC-X4U'  
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Initialize session state for resume history
@@ -32,15 +32,13 @@ def get_resume_score(resume_text, job_description):
     """
     )
     
-    # Initialize the Gemini model
-    model = genai.GenerativeModel('gemini-2.0-flash-thinking-exp-1219')  # Use the Gemini Pro model
+    
+    model = genai.GenerativeModel('gemini-2.0-flash-thinking-exp-1219') 
     
     try:
-        # Generate response using Gemini
         response = model.generate_content(prompt)
         result = response.text
         
-        # Extract score, analysis, and key skills from the response
         score = int(result.split("Score: ")[1].split("/")[0])
         analysis = result.split("Analysis: ")[1].split("Key Skills: ")[0].strip()
         key_skills = result.split("Key Skills: ")[1].strip()
@@ -61,8 +59,8 @@ def process_resume(uploaded_file, job_description):
         resume_text = extract_text_from_pdf(uploaded_file)
         score, analysis, key_skills = get_resume_score(resume_text, job_description)
         st.session_state.resume_history.append({
-            "job_description": job_description,  # Store the job description
-            "resume_file_name": uploaded_file.name,  # Store the resume file name
+            "job_description": job_description, 
+            "resume_file_name": uploaded_file.name,  
             "resume_text": resume_text,
             "score": score,
             "analysis": analysis,
@@ -75,13 +73,11 @@ def rank_resumes():
     """Ranks resumes based on their score."""
     return sorted(st.session_state.resume_history, key=lambda x: x["score"], reverse=True)
 
-# Streamlit UI
+
 st.title("AI-Powered Resume Screening & Ranking")
 
-# User input for job description
 job_description = st.text_area("Enter Job Description:")
 
-# File upload for resumes
 uploaded_file = st.file_uploader("Upload Resume (PDF format only)", type=["pdf"])
 
 if st.button("Analyze Resume"):
@@ -96,7 +92,6 @@ if st.button("Analyze Resume"):
     else:
         st.error("Please upload a resume and enter a job description.")
 
-# Display ranked resumes
 st.subheader("Ranked Resumes")
 if st.session_state.resume_history:
     ranked_resumes = rank_resumes()
@@ -106,6 +101,6 @@ if st.session_state.resume_history:
         st.write(f"Resume File Name: {resume_data['resume_file_name']}")
         st.write(f"Analysis: {resume_data['analysis']}")
         st.write(f"Key Skills: {resume_data['key_skills']}")
-        st.write("---")  # Add a separator between resumes
+        st.write("---") 
 else:
     st.write("No resumes analyzed yet.")
