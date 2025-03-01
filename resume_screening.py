@@ -3,7 +3,7 @@ import PyPDF2
 import google.generativeai as genai  # Import the Gemini library
 
 # Set your Gemini API Key
-GEMINI_API_KEY = 'AIzaSyDT5161mUjmkK8ywECD26_ZR3YaSjC-X4U'  # Replace with your actual Gemini API key
+GEMINI_API_KEY = 'api key'  # Replace with your actual Gemini API key
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Initialize session state for resume history
